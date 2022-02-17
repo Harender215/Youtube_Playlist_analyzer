@@ -1,3 +1,4 @@
+const { getName } = require('domutils');
 const puppeteer = require('puppeteer')
 let cTab
 let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaNY_CL';
@@ -36,6 +37,10 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
             currentVideos = await getCVideosLength()
         }
 
+        let finalList = await getStats()
+        console.log(finalList);    
+
+
 
     }catch(error){
         console.log(error)
@@ -69,9 +74,33 @@ async function scrollToBottom()
     }
 }
 
+async function getStats(){
+
+    let list = cTab.evaluate(getNameAndDuration, "#video-title", "#container>#thumbnail span.style-scope.ytd-thumbnail-overlay-time-status-renderer")
+    return list;
+}
+
+
 
 
 function getLength(durationSelect){
     let durationElem = document.querySelectorAll(durationSelect)
     return durationElem.length;
+}
+
+
+function getNameAndDuration(videoSelector, durationSelector){
+    let videoElem = document.querySelectorAll(videoSelector)
+    let durationElem = document.querySelectorAll(durationSelector)
+
+    let currentList = []
+
+    for(let i=0; i<durationElem.length; i++)
+    {
+        let videoTitle = videoElem[i].innerText
+        let duration = durationElem[i].innerText
+        currentList.push({videoTitle, duration})
+    }
+
+    return currentList;
 }
