@@ -30,7 +30,11 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
         let currentVideos = await getCVideosLength()
         console.log(currentVideos)
 
-
+        while(TotalVideos-currentVideos >= 20)
+        {
+            await scrollToBottom()
+            currentVideos = await getCVideosLength()
+        }
 
 
     }catch(error){
@@ -55,6 +59,14 @@ function getData(selector){
 async function getCVideosLength(){
     let length = await cTab.evaluate(getLength,"#container>#thumbnail span.style-scope.ytd-thumbnail-overlay-time-status-renderer")
     return length;
+}
+
+async function scrollToBottom()
+{
+    await cTab.evaluate(goToBottom)
+    function goToBottom(){
+        window.scrollBy(0, window.innerHeight)
+    }
 }
 
 
