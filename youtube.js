@@ -15,8 +15,12 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
         let allTabsArr = await browserInstance.pages()
         cTab = allTabsArr[0]
         await cTab.goto(link)
+        await cTab.waitForSelector('h1#title')
+        let name = await cTab.evaluate(function(select){
+            return document.querySelector(select).innerText
+        },'h1#title')
         
-
+        console.log(name)
 
     }catch(error){
 
