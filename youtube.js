@@ -22,8 +22,16 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
 
         // console.log(name)
         let allData = await cTab.evaluate(getData, 'div.style-scope.ytd-playlist-sidebar-primary-info-renderer')
-        console.log(name+"\n", allData.noOfVideos, allData.noOfViews)
+        console.log(name+"\n", allData.noOfVideos+" ", allData.noOfViews+" ")
         
+        let TotalVideos = allData.noOfVideos.split(" ")[0]
+        console.log(TotalVideos)
+
+        let currentVideos = await getCVideosLength()
+        console.log(currentVideos)
+
+
+
 
     }catch(error){
         console.log(error)
@@ -41,4 +49,17 @@ function getData(selector){
         noOfVideos,
         noOfViews
     }
+}
+
+
+async function getCVideosLength(){
+    let length = await cTab.evaluate(getLength,"#container>#thumbnail span.style-scope.ytd-thumbnail-overlay-time-status-renderer")
+    return length;
+}
+
+
+
+function getLength(durationSelect){
+    let durationElem = document.querySelectorAll(durationSelect)
+    return durationElem.length;
 }
