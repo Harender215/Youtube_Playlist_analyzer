@@ -19,10 +19,26 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
         let name = await cTab.evaluate(function(select){
             return document.querySelector(select).innerText
         },'h1#title')
+
+        // console.log(name)
+        let allData = await cTab.evaluate(getData, 'div.style-scope.ytd-playlist-sidebar-primary-info-renderer')
+        console.log(name+"\n", allData.noOfVideos, allData.noOfViews)
         
-        console.log(name)
 
     }catch(error){
-
+        console.log(error)
     }
-})()
+})();
+
+
+function getData(selector){
+    let allElems = document.querySelectorAll(selector)
+    let noOfVideos = allElems[0].innerText
+    let noOfViews = allElems[1].innerText
+    console.log(noOfVideos)
+    console.log(noOfViews)
+    return{
+        noOfVideos,
+        noOfViews
+    }
+}
