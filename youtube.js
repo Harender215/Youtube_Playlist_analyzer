@@ -1,5 +1,10 @@
 const { getName } = require('domutils');
 const puppeteer = require('puppeteer')
+//npm install pdfkit
+const pdf = require('pdfkit')
+const fs = require('fs')
+
+
 let cTab
 let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaNY_CL';
 
@@ -38,7 +43,12 @@ let link = 'https://www.youtube.com/playlist?list=PLRBp0Fe2GpglvwYma4hf0fJy0sWaN
         }
 
         let finalList = await getStats()
-        console.log(finalList);    
+        let pdfDoc = new pdf
+        
+        pdfDoc.pipe(fs.createWriteStream('_play.pdf'))
+        pdfDoc.text(JSON.stringify(finalList))
+        pdfDoc.end()
+
 
 
 
